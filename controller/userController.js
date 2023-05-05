@@ -1,9 +1,6 @@
 module.exports = {
-  detail: async () => {
-    try {
-    } catch (error) {}
-  },
-  allUser: async () => {
+  register: async () => {
+    
     try {
     } catch (error) {}
   },
@@ -11,15 +8,11 @@ module.exports = {
     try {
     } catch (error) {}
   },
-  register: async () => {
+  detail: async () => {
     try {
     } catch (error) {}
   },
-  remove: async () => {
-    try {
-    } catch (error) {}
-  },
-  update: async () => {
+  allUser: async () => {
     try {
     } catch (error) {}
   },
@@ -39,4 +32,12 @@ module.exports = {
     try {
     } catch (error) {}
   },
+  update: async () => {
+    try {
+    } catch (error) {}
+  },
+  remove: async () => {
+    try {
+    } catch (error) {}
+  }
 };
