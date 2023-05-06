@@ -13,13 +13,13 @@ module.exports = {
     const { name, token, email } = data;
     try {
       const infoMail = await transport.sendMail({
-        from: "Project Manager <info@projectmanager.com>",
+        from: "NEW HOME <info@ecommerce.com>",
         to: email,
         subject: "Confirma tu cuenta",
-        text: "Confirmar tu cuenta en Project Manajer",
+        text: "Confirmar tu cuenta en New Home",
         html: `
             <p>Hola ${name} hace click en el siguiente enlace para confirmar</p>
-            <a href="${process.env.URL_FRONTEND}/confirm/${token}">Confirmar cuenta</a>
+            <a href="${process.env.HOST}:${process.env.PORT}/confirm/${token}">Confirmar cuenta</a>
             `,
       });
       console.log(infoMail);

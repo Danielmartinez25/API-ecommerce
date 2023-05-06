@@ -1,6 +1,6 @@
 module.exports = {
   register: async () => {
-    
+    const {} = req.body
     try {
     } catch (error) {}
   },
