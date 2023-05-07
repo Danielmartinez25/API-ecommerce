@@ -4,7 +4,7 @@ const apiKey = client.authentications["api-key"];
 apiKey.apiKey = process.env.API_KEY;
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 const sender = {
-  email: "danimartinez@gmail.com",
+  email: "danimartinez1325@gmail.com",
   name: "New Home Company",
 };
 module.exports = {
@@ -26,7 +26,7 @@ module.exports = {
             <a href="${process.env.HOST}:${process.env.PORT}/confirm/${token}">Confirmar cuenta</a>
         `,
       });
-      console.log(sendMail);
+      console.log(sendMail.response);
     } catch (error) {
       console.error(error);
     }
