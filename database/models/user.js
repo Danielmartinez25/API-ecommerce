@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { hash, compare } = require("bcryptjs");
 const { default: isEmail } = require("validator/lib/isEmail");
 const userSchema = new mongoose.Schema(
   {
@@ -35,11 +36,6 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    rol: {
-      type: Number,
-      default: 0,
-      require: [true , "Rol is required"]
-    },
     image: {
       secure_url: String,
       public_id: String,
@@ -55,4 +51,4 @@ userSchema.pre("save", async function (next) {
   }
   this.password = await hash(this.password, 10);
 });
-module.exports = mongoose.model("User", productSchema);
+module.exports = mongoose.model("User",userSchema);
