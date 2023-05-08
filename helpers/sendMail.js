@@ -22,7 +22,7 @@ module.exports = {
             <a href="${process.env.HOST}:${process.env.PORT}/confirm/${token}">Confirmar cuenta</a>
             `,
       });
-      console.log(infoMail);
+      console.log('Subido exitosamente');
     } catch (error) {
       console.log(error);
     }

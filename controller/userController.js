@@ -3,10 +3,12 @@ const User = require("../database/models/user");
 const generateTokenRandom = require("../helpers/generateTokenRandom");
 const { confirmRegister } = require("../helpers/sendMail");
 const errorResponse = require("../helpers/errorResponse");
+const uploadImage = require("../helpers/uploadImage");
 module.exports = {
   register: async (req, res) => {
     try {
       const { name, email, password, address, phone } = req.body;
+
       if ([name, email, password, address, phone].includes("")) {
         throw createError(400, "Todos los campos son obligatorios");
       }
@@ -19,12 +21,19 @@ module.exports = {
       const token = generateTokenRandom();
       user = new User(req.body);
       user.token = token;
+      if (req.files?.image) {
+        const result = await uploadImage(req.files.image.tempFilePath);
+        user.image = {
+          public_id: result.public_id,
+          secure_url: result.secure_url,
+        };
+      }
       const userStore = await user.save();
       await confirmRegister({
-        name : userStore.name,
-        email : userStore.email,
-        token : userStore.token
-      })
+        name: userStore.name,
+        email: userStore.email,
+        token: userStore.token,
+      });
       return res.status(200).json({
         ok: true,
         status: 200,
@@ -71,16 +80,16 @@ module.exports = {
     try {
     } catch (error) {}
   },
-  removeAll : async (req,res) =>{
+  removeAll: async (req, res) => {
     try {
-      await User.deleteMany()
+      await User.deleteMany();
       return res.status(200).json({
-        ok : true,
-        status :200,
-        msg : 'Document remove'
-      })
+        ok: true,
+        status: 200,
+        msg: "Document remove",
+      });
     } catch (error) {
-      errorResponse(res,error,'Delete Many')
+      errorResponse(res, error, "Delete Many");
     }
-  }
+  },
 };
