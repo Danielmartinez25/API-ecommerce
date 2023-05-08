@@ -3,7 +3,8 @@ const User = require("../database/models/user");
 const generateTokenRandom = require("../helpers/generateTokenRandom");
 const { confirmRegister } = require("../helpers/sendMail");
 const errorResponse = require("../helpers/errorResponse");
-const uploadImage = require("../helpers/uploadImage");
+const {uploadImage, deleteImage} = require("../helpers/uploadImage");
+const fs = require('fs-extra')
 module.exports = {
   register: async (req, res) => {
     try {
@@ -18,7 +19,7 @@ module.exports = {
       if (user) {
         throw createError(400, "El email se encuentra registrado");
       }
-      const token = generateTokenRandom();
+      const token = generateTokenRandom(req,res);
       user = new User(req.body);
       user.token = token;
       if (req.files?.image) {
@@ -26,9 +27,10 @@ module.exports = {
         user.image = {
           public_id: result.public_id,
           secure_url: result.secure_url,
-        };
+        }
+        await fs.unlink(req.files.image.tempFilePath);
       }
-      const userStore = await user.save();
+      const userStore = await user.save(req,res);
       await confirmRegister({
         name: userStore.name,
         email: userStore.email,
@@ -44,45 +46,56 @@ module.exports = {
       return errorResponse(res, error, "Register");
     }
   },
-  login: async () => {
+  login: async (req,res) => {
     try {
     } catch (error) {}
   },
-  detail: async () => {
+  detail: async (req,res) => {
     try {
     } catch (error) {}
   },
-  allUser: async () => {
+  allUser: async (req,res) => {
     try {
     } catch (error) {}
   },
-  checked: async () => {
+  checked: async (req,res) => {
     try {
     } catch (error) {}
   },
-  sendToken: async () => {
+  sendToken: async (req,res) => {
     try {
     } catch (error) {}
   },
-  verifyToken: async () => {
+  verifyToken: async (req,res) => {
     try {
     } catch (error) {}
   },
-  changePassword: async () => {
+  changePassword: async (req,res) => {
     try {
     } catch (error) {}
   },
-  update: async () => {
+  update: async (req,res) => {
     try {
     } catch (error) {}
   },
-  remove: async () => {
+  remove: async (req,res) => {
     try {
-    } catch (error) {}
+      const {id} = req.params
+      const user = await User.findByIdAndDelete(id)
+      await deleteImage(user.image.public_id)
+      return res.status(200).json({
+        ok : true,
+        status: 200,
+        msg : 'Collection delete'
+      })
+    } catch (error) {
+      errorResponse(res,error,'Remove')
+    }
   },
   removeAll: async (req, res) => {
     try {
-      await User.deleteMany();
+      const deleteAll = await User.deleteMany();
+      await deleteImage(deleteAll.public_id)
       return res.status(200).json({
         ok: true,
         status: 200,

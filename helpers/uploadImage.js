@@ -5,9 +5,16 @@ cloudinary.config({
   api_secret: process.env.CLOUD_API_SECRET,
   secure: true,
 });
-module.exports = async (filePath) => {
-  const image = await cloudinary.uploader.upload(filePath, {
-    folder: "user-eCommerce",
-  });
-  return image
+module.exports = {
+  uploadImage: async (filePath) => {
+    const image = await cloudinary.uploader.upload(filePath, {
+      folder: "user-eCommerce",
+    });
+    return image;
+  },
+  deleteImage : async(publicId) =>{
+    const removeImage = await cloudinary.uploader.destroy(publicId)
+    return removeImage
+  }
+
 };
