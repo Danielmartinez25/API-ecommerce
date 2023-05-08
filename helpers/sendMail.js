@@ -19,7 +19,7 @@ module.exports = {
         text: "Confirmar tu cuenta en New Home",
         html: `
             <p>Hola ${name} hace click en el siguiente enlace para confirmar</p>
-            <a href="${process.env.URL_FRONTEND}/confirm/${token}">Confirmar cuenta</a>
+            <a href="${process.env.HOST}:${process.env.PORT}/confirm/${token}">Confirmar cuenta</a>
             `,
       });
       console.log(infoMail);
