@@ -3,8 +3,8 @@ const router = express.Router();
 const fileUpload = require("express-fileupload");
 const {detail,allUser,update,remove,login,register,changePassword,checked,sendToken,verifyToken, removeAll} = require('../controller/userController')
 router
-  .get("/user/:id", detail)
-  .get("/users", allUser)
+  .get("/detail/:id", detail)
+  .get("/all", allUser)
   .put("/update/:id", update)
   .post("/login", login)
   .post(
