@@ -4,7 +4,7 @@ const generateTokenRandom = require("../helpers/generateTokenRandom");
 const { confirmRegister } = require("../helpers/sendMail");
 const errorResponse = require("../helpers/errorResponse");
 module.exports = {
-  register: async (req,res) => {
+  register: async (req, res) => {
     try {
       const { name, email, password, address, phone } = req.body;
       if ([name, email, password, address, phone].includes("")) {
@@ -18,21 +18,21 @@ module.exports = {
       }
       const token = generateTokenRandom();
       user = new User(req.body);
-      user.token = token 
+      user.token = token;
       const userStore = await user.save();
       await confirmRegister({
-        name: userStore.name,
-        email: userStore.email,
-        token: userStore.token,
-      });
-      return res.status(200).json({
-        ok : true,
-        status : 200,
-        data : userStore
+        name : userStore.name,
+        email : userStore.email,
+        token : userStore.token
       })
+      return res.status(200).json({
+        ok: true,
+        status: 200,
+        data: userStore,
+      });
     } catch (error) {
       console.log(error);
-      return errorResponse(res,error,'Register')
+      return errorResponse(res, error, "Register");
     }
   },
   login: async () => {
@@ -71,4 +71,16 @@ module.exports = {
     try {
     } catch (error) {}
   },
+  removeAll : async (req,res) =>{
+    try {
+      await User.deleteMany()
+      return res.status(200).json({
+        ok : true,
+        status :200,
+        msg : 'Document remove'
+      })
+    } catch (error) {
+      errorResponse(res,error,'Delete Many')
+    }
+  }
 };

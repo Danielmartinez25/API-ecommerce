@@ -1,34 +1,49 @@
-const SibApiV3Sdk = require("sib-api-v3-sdk");
-const client = SibApiV3Sdk.ApiClient.instance;
-const apiKey = client.authentications["api-key"];
-apiKey.apiKey = process.env.API_KEY;
-const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
-const sender = {
-  email: "danimartinez1325@gmail.com",
-  name: "New Home Company",
-};
+const nodemailer = require("nodemailer");
+
+const transport = nodemailer.createTransport({
+  host: process.env.MAIL_HOST,
+  port: process.env.MAIL_PORT,
+  auth: {
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASS,
+  },
+});
 module.exports = {
-  confirmRegister : async (data) => {
-    const {email,name,token} = data
-    const receivers = [
-      {
-        email
-      }
-    ]
+  confirmRegister: async (data) => {
+    const { name, token, email } = data;
     try {
-      const sendMail = await apiInstance.sendTransacEmail({
-        sender,
-        to: receivers,
-        subject: `Confirmar tu cuenta`,
-        textContent: "Confirmar tu cuenta en New Home Company",
-        htmlContent: `
-        <p>Hola ${name} hace click en el siguiente enlace para confirmar</p>
-            <a href="${process.env.HOST}:${process.env.PORT}/confirm/${token}">Confirmar cuenta</a>
-        `,
+      const infoMail = await transport.sendMail({
+        from: "New Home <info@newhome.com>",
+        to: email,
+        subject: "Confirma tu cuenta",
+        text: "Confirmar tu cuenta en New Home",
+        html: `
+            <p>Hola ${name} hace click en el siguiente enlace para confirmar</p>
+            <a href="${process.env.URL_FRONTEND}/confirm/${token}">Confirmar cuenta</a>
+            `,
       });
-      console.log(sendMail.response);
+      console.log(infoMail);
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
-  }
-}
+  },
+  forgotPassword: async (data) => {
+    const { name, token, email } = data;
+
+    try {
+      const infoMail = await transport.sendMail({
+        from: "New Home <info@newhome.com>",
+        to: email,
+        subject: "Reestablecé tu contraseña",
+        text: "Reestablecé tu contraseña en New Home",
+        html: `
+                <p>Hola ${name}, hacé click en el siguiente enlace para <a href="${process.env.URL_FRONTEND}/recover-password/${token}">reestablecer tu contraseña</a> <p/>
+                
+                `,
+      });
+      console.log(infoMail);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+};
