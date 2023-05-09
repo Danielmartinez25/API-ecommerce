@@ -5,6 +5,7 @@ const { confirmRegister } = require("../helpers/sendMail");
 const errorResponse = require("../helpers/errorResponse");
 const { uploadImage, deleteImage } = require("../helpers/uploadImage");
 const fs = require("fs-extra");
+const generateJWT = require("../helpers/generateJWT");
 module.exports = {
   register: async (req, res) => {
     try {
@@ -47,8 +48,9 @@ module.exports = {
     }
   },
   login: async (req, res) => {
+    const { email, password } = req.body;
     try {
-      const { email, password } = req.body;
+      console.log(req.body);
       if ([email, password].includes("")) {
         throw createError(400, "Todos los campos son obligatorios");
       }
@@ -63,23 +65,23 @@ module.exports = {
       if (!user.checked) {
         throw createError(404, "Tu cuenta no ha sido confirmada");
       }
+      console.log(user.checked)
       if (!(await user.checkedPassword(password))) {
         throw createError(404, "Credenciales invalidas");
       }
-        return res.status(200).json({
-          ok: true,
-          msg: "Usuario Logueado",
-          user: {
-            name: user.name,
-            _id: user._id,
-          },
-          token: generateJWT({
-            id: user._id,
-          }),
-        });
-      
+      return res.status(200).json({
+        ok: true,
+        msg: "Usuario Logueado",
+        user: {
+          name: user.name,
+          _id: user._id,
+        },
+        token: generateJWT({
+          id: user._id,
+        }),
+      });
     } catch (error) {
-      return errorResponse(res,error,'Login')
+      return errorResponse(res, error, "Login");
     }
   },
   detail: async (req, res) => {
@@ -99,6 +101,8 @@ module.exports = {
   allUser: async (req, res) => {
     try {
       const users = await User.find();
+      if (!users)
+        throw createError(400, "no se encontraron colecciones en database");
       return res.status(200).json({
         ok: true,
         status: 200,
@@ -110,6 +114,20 @@ module.exports = {
   },
   checked: async (req, res) => {
     try {
+      const { token } = req.query;
+      if (!token) throw createError(400, "Token inexistente");
+      const user = await User.findOne({
+        token,
+      });
+      if (!user) throw createError(400, "Token invalido");
+      user.checked = true;
+      user.token = "";
+      await user.save();
+      return res.status(200).json({
+        ok: true,
+        status: 200,
+        msg: "Usuario checkeado",
+      });
     } catch (error) {}
   },
   sendToken: async (req, res) => {

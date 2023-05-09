@@ -28,6 +28,10 @@ const userSchema = new mongoose.Schema(
     token: {
       type: String,
     },
+    checked : {
+      type : Boolean,
+      default : false
+    },
     address: {
       type: String,
       trim: true,
@@ -52,4 +56,7 @@ userSchema.pre("save", async function (next) {
   }
   this.password = await hash(this.password, 10);
 });
+userSchema.methods.checkedPassword = async function (password) {
+  return await compare(password, this.password);
+};
 module.exports = mongoose.model("User",userSchema);

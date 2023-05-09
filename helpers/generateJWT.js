@@ -5,4 +5,3 @@ module.exports = (payload) =>
     expiresIn: "1h",
   });
 
-module.exports = generateToken
