@@ -21,14 +21,15 @@ const productSchema = new mongoose.Schema(
       default: 0,
       require: [true, "Price is required"],
     },
+    dues: {
+      type: Number,
+      min: 0,
+      max: 6,
+    },
     discount: {
       type: Number,
       default: 0,
       require: [true, "Discount is required"],
-    },
-    category: {
-      type: String,
-      require: [true, "Category is required"],
     },
     image: {
       secure_url: String,

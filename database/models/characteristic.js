@@ -12,8 +12,7 @@ const characteristicSchema = new mongoose.Schema({
     trim: true,
   },
   camera: {
-    frontal: { type: Number },
-    rear: { type: Number }
+    type : Number
   },
   screenSize : {
     type : Number
