@@ -1,13 +1,13 @@
 require ('dotenv').config()
 const createError = require("http-errors");
 const express = require("express");
-const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoDB = require('./database/config')
 mongoDB()
 
 const usersRouter = require("./routes/users");
+const productsRouter = require('./routes/product')
 
 const app = express();
 
@@ -16,6 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use("/api/users", usersRouter);
+app.use("/api/products",productsRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
