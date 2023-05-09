@@ -11,6 +11,11 @@ const productSchema = new mongoose.Schema(
       trim: true,
       require: [true, "Description is required"],
     },
+    color: {
+      type: String,
+      trim: true,
+      require: [true, "Description is required"],
+    },
     price: {
       type: Number,
       default: 0,
@@ -29,6 +34,9 @@ const productSchema = new mongoose.Schema(
       secure_url: String,
       public_id: String,
     },
+    model_id: { type: Schema.Types.ObjectId, ref: "Model" },
+    comment_id: { type: Schema.Types.ObjectId, ref: "Comment" },
+    characteristic_id: { type: Schema.Types.ObjectId, ref: "Characteristic" },
   },
   {
     timestamps: true,
