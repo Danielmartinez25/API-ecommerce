@@ -128,29 +128,38 @@ module.exports = {
         status: 200,
         msg: "Usuario checkeado",
       });
-    } catch (error) {}
+    } catch (error) {
+      return errorResponse(res, error, "Checked");
+    }
   },
   sendToken: async (req, res) => {
     const { email } = req.body;
+    
     try {
       const user = await User.findOne({
         email,
       });
-      if (!user) throw createError(400, "El email no se encuentra en nuestra base de datos");
+      if (!user)
+        throw createError(
+          400,
+          "El email no se encuentra en nuestra base de datos"
+        );
       const token = generateTokenRandom();
       user.token = token;
       await user.save();
       await forgotPassword({
-        name : user.name,
-        email : user.email,
-        token : user.token
-      })
+        name: user.name,
+        email: user.email,
+        token: user.token,
+      });
       return res.status(200).json({
         ok: true,
         status: 200,
         msg: "Verifique su casilla de mensajes",
       });
-    } catch (error) {}
+    } catch (error) {
+      return errorResponse(res, error, "Send-Token");
+    }
   },
   verifyToken: async (req, res) => {
     const { token } = req.query;
@@ -165,11 +174,30 @@ module.exports = {
         status: 200,
         msg: "Token verificado",
       });
-    } catch (error) {}
+    } catch (error) {
+      return errorResponse(res, error, "Verify-token");
+    }
   },
   changePassword: async (req, res) => {
     try {
-    } catch (error) {}
+      const { token } = req.query;
+      if(!token) throw createError(400,'Token inexistente')
+      const { password } = req.body;
+      const user = await User.findOne({
+        token,
+      });
+      if(!user) throw createError(400,'El token es invalido')
+      user.password = password;
+      user.token = "";
+      await user.save();
+      return res.status(200).json({
+        ok: true,
+        status: 200,
+        msg: "Change Password",
+      });
+    } catch (error) {
+      return errorResponse(res, error, "Change-Password");
+    }
   },
   update: async (req, res) => {
     try {

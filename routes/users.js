@@ -7,8 +7,7 @@ router
   .get("/all", allUser)
   .put("/update/:id", update)
   .post("/login", login)
-  .post(
-    "/register",fileUpload({useTempFiles: true,tempFileDir: "./uploads",}),register)
+  .post("/register",fileUpload({useTempFiles: true,tempFileDir: "./uploads"}),register)
   .delete("/remove/:id", remove)
   .delete("/remove", removeAll)
   .get("/checked", checked)
