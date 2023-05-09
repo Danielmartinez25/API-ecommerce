@@ -134,7 +134,7 @@ module.exports = {
   },
   sendToken: async (req, res) => {
     const { email } = req.body;
-    
+
     try {
       const user = await User.findOne({
         email,
@@ -181,12 +181,12 @@ module.exports = {
   changePassword: async (req, res) => {
     try {
       const { token } = req.query;
-      if(!token) throw createError(400,'Token inexistente')
+      if (!token) throw createError(400, "Token inexistente");
       const { password } = req.body;
       const user = await User.findOne({
         token,
       });
-      if(!user) throw createError(400,'El token es invalido')
+      if (!user) throw createError(400, "El token es invalido");
       user.password = password;
       user.token = "";
       await user.save();
@@ -201,7 +201,24 @@ module.exports = {
   },
   update: async (req, res) => {
     try {
-    } catch (error) {}
+      const { id } = req.params;
+      const { name, email, password, phone, address } = req.body;
+      const user = await User.findById(id);
+      console.log(user);
+      user.name = name || user.name;
+      user.email = email || user.email;
+      user.password = password || user.password;
+      user.phone = phone || user.phone;
+      user.address = address || user.address;
+      const userUpdate = await user.save();
+      return res.status(200).json({
+        ok : true,
+        status : 200,
+        data : userUpdate
+      })
+    } catch (error) {
+      return errorResponse(res,error,'Update')
+    }
   },
   remove: async (req, res) => {
     try {
