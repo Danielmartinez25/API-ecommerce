@@ -202,8 +202,10 @@ module.exports = {
   update: async (req, res) => {
     try {
       const { id } = req.params;
+      if(!token) throw createError(400,'No se encontro ID')
       const { name, email, password, phone, address } = req.body;
       const user = await User.findById(id);
+      if(!user) throw createError(400,'Usuario no encontrado')
       user.name = name || user.name;
       user.email = email || user.email;
       user.password = password || user.password;
