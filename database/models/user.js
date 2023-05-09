@@ -35,6 +35,7 @@ const userSchema = new mongoose.Schema(
     phone: {
       type: Number,
       default: 0,
+      unique : true
     },
     image: {
       secure_url: String,

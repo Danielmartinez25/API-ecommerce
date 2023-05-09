@@ -48,13 +48,45 @@ module.exports = {
   },
   login: async (req, res) => {
     try {
-    } catch (error) {}
+      const { email, password } = req.body;
+      if ([email, password].includes("")) {
+        throw createError(400, "Todos los campos son obligatorios");
+      }
+      let user = await User.findOne({
+        email,
+      });
+
+      if (!user) {
+        throw createError(404, "Credenciales invalidas");
+      }
+
+      if (!user.checked) {
+        throw createError(404, "Tu cuenta no ha sido confirmada");
+      }
+      if (!(await user.checkedPassword(password))) {
+        throw createError(404, "Credenciales invalidas");
+      }
+        return res.status(200).json({
+          ok: true,
+          msg: "Usuario Logueado",
+          user: {
+            name: user.name,
+            _id: user._id,
+          },
+          token: generateJWT({
+            id: user._id,
+          }),
+        });
+      
+    } catch (error) {
+      return errorResponse(res,error,'Login')
+    }
   },
   detail: async (req, res) => {
     try {
-      const {id} = req.params
+      const { id } = req.params;
       const user = await User.findById(id);
-      if(!user) throw createError(400,'El usuario no existe');
+      if (!user) throw createError(400, "El usuario no existe");
       return res.status(200).json({
         ok: true,
         status: 200,
@@ -114,8 +146,7 @@ module.exports = {
   },
   removeAll: async (req, res) => {
     try {
-      const deleteAll = await User.deleteMany();
-      await deleteImage(deleteAll.public_id);
+      await User.deleteMany();
       return res.status(200).json({
         ok: true,
         status: 200,
