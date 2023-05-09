@@ -1,7 +1,7 @@
 const createError = require("http-errors");
 const User = require("../database/models/user");
 const generateTokenRandom = require("../helpers/generateTokenRandom");
-const { confirmRegister } = require("../helpers/sendMail");
+const { confirmRegister, forgotPassword } = require("../helpers/sendMail");
 const errorResponse = require("../helpers/errorResponse");
 const { uploadImage, deleteImage } = require("../helpers/uploadImage");
 const fs = require("fs-extra");
@@ -65,7 +65,7 @@ module.exports = {
       if (!user.checked) {
         throw createError(404, "Tu cuenta no ha sido confirmada");
       }
-      console.log(user.checked)
+      console.log(user.checked);
       if (!(await user.checkedPassword(password))) {
         throw createError(404, "Credenciales invalidas");
       }
@@ -131,11 +131,40 @@ module.exports = {
     } catch (error) {}
   },
   sendToken: async (req, res) => {
+    const { email } = req.body;
     try {
+      const user = await User.findOne({
+        email,
+      });
+      if (!user) throw createError(400, "El email no se encuentra en nuestra base de datos");
+      const token = generateTokenRandom();
+      user.token = token;
+      await user.save();
+      await forgotPassword({
+        name : user.name,
+        email : user.email,
+        token : user.token
+      })
+      return res.status(200).json({
+        ok: true,
+        status: 200,
+        msg: "Verifique su casilla de mensajes",
+      });
     } catch (error) {}
   },
   verifyToken: async (req, res) => {
+    const { token } = req.query;
     try {
+      if (!token) throw createError(400, "No hay token en la petición");
+      const user = await User.findOne({
+        token,
+      });
+      if (!user) throw createError(400, "Token inexistente");
+      return res.status(200).json({
+        ok: true,
+        status: 200,
+        msg: "Token verificado",
+      });
     } catch (error) {}
   },
   changePassword: async (req, res) => {
