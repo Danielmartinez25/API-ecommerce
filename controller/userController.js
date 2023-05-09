@@ -204,7 +204,6 @@ module.exports = {
       const { id } = req.params;
       const { name, email, password, phone, address } = req.body;
       const user = await User.findById(id);
-      console.log(user);
       user.name = name || user.name;
       user.email = email || user.email;
       user.password = password || user.password;
