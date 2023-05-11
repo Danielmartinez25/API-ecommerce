@@ -45,6 +45,10 @@ const userSchema = new mongoose.Schema(
       secure_url: String,
       public_id: String,
     },
+    comment :{
+      type : mongoose.Schema.Types.ObjectId,
+      ref : 'Comment'
+    }
   },
   {
     timestamps: true,

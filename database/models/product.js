@@ -37,8 +37,7 @@ const productSchema = new mongoose.Schema(
       require: [true, "Processor is required"],
     },
     storage: {
-      type: String,
-      trim: true,
+      type: Number,
       require: [true, "Storage is required"],
     },
     camera: {
@@ -55,8 +54,10 @@ const productSchema = new mongoose.Schema(
       secure_url: String,
       public_id: String,
     },
-    model_id: { type: mongoose.Schema.Types.ObjectId, ref: "Model" },
-    comment_id: { type: mongoose.Schema.Types.ObjectId, ref: "Comment" }
+    model: { type: mongoose.Schema.Types.ObjectId, ref: "Model" },
+    comment: { type: mongoose.Schema.Types.ObjectId, ref: "Comment" },
+    brand: { type: mongoose.Schema.Types.ObjectId, ref: "Brand" }
+
   },
   {
     timestamps: true,

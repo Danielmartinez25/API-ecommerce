@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const commentSchema = new mongoose.Schema({
-    product_id : { type : mongoose.Schema.Types.ObjectId, ref : 'Product'},
-    user_id : {type :Schema.Types.ObjectId, ref : 'User'},
+    product : { type : mongoose.Schema.Types.ObjectId, ref : 'Product'},
+    user : {type :mongoose.Schema.Types.ObjectId, ref : 'User'},
     comment : {type : String,require: [true,'Comment is required'], trim : true},
     date : {type : Date, default : Date.now()}
 })
