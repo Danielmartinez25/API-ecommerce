@@ -20,7 +20,7 @@ module.exports = {
       if (user) {
         throw createError(400, "El email se encuentra registrado");
       }
-      const token = generateTokenRandom(req, res);
+      const token = generateTokenRandom();
       user = new User(req.body);
       user.token = token;
       if (req.files?.image) {

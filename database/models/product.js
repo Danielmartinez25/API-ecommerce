@@ -55,8 +55,8 @@ const productSchema = new mongoose.Schema(
       secure_url: String,
       public_id: String,
     },
-    model_id: { type: Schema.Types.ObjectId, ref: "Model" },
-    comment_id: { type: Schema.Types.ObjectId, ref: "Comment" }
+    model_id: { type: mongoose.Schema.Types.ObjectId, ref: "Model" },
+    comment_id: { type: mongoose.Schema.Types.ObjectId, ref: "Comment" }
   },
   {
     timestamps: true,
