@@ -3,5 +3,5 @@ const router = express.Router()
 const {createBrand, detailBrand} = require('../controller/brandController')
 router
 .post('/create',createBrand)
-.get('/detail',detailBrand)
+.get('/detail/:id',detailBrand)
 module.exports = router

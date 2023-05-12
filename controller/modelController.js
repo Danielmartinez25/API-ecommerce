@@ -5,8 +5,8 @@ module.exports = {
     createModel : async(req,res) => {
         try {
         const {name,brandId} = req.body
-        const brand = Brand.findById(brandId)
-        const model = Model({name, brand })
+        const brand = await Brand.findById(brandId)
+        const model = Model({name, brand : brand._id })
         const modelStore = await model.save()
         return res.status(200).json({
             ok : true,
