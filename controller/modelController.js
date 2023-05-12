@@ -15,6 +15,19 @@ module.exports = {
         } catch (error) {
         return errorResponse(res,error,'Model Create')
         }
+    },
+    detailModel : async(req,res) =>{
+        try {
+            const {id} = req.params
+            const model = await Model.findById(id)
+            return res.status(200).json({
+                ok: true,
+                status: 200,
+                data: model
+            })
+        } catch (error) {
+            return errorResponse(res,error,'Model Detail')
+        }
     }
 }
  

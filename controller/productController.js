@@ -1,10 +1,12 @@
+const Brand = require("../database/models/brand");
+const Model = require("../database/models/model");
 const Product = require("../database/models/product");
 const errorResponse = require("../helpers/errorResponse");
 const createError = require('http-errors')
 
 module.exports = {
   create: async (req, res) => {
-    const {name,description,color,price,discount,dues,processor,storage,camera,screenSize} = req.body
+    const {name,description,color,price,discount,dues,processor,storage,camera,screenSize,brandId,modelId} = req.body
     console.log(req.body);
     try {
       if (
@@ -20,6 +22,8 @@ module.exports = {
         !screenSize
       )
         throw createError(400, "Todos los campos son obligatorios");
+    const brand = await Brand.findById(brandId)
+    const model = await Model.findById(modelId)
     const product = Product({
       name,
       description,
@@ -30,9 +34,12 @@ module.exports = {
       processor,
       storage,
       camera,
-      screenSize
+      screenSize,
+      model,
+      brand 
     })
     const productStore = await product.save()
+    
     return res.status(200).json({
       ok : true,
       status : 200,

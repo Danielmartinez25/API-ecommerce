@@ -55,7 +55,6 @@ const productSchema = new mongoose.Schema(
       public_id: String,
     },
     model: { type: mongoose.Schema.Types.ObjectId, ref: "Model" },
-    comment: { type: mongoose.Schema.Types.ObjectId, ref: "Comment" },
     brand: { type: mongoose.Schema.Types.ObjectId, ref: "Brand" }
   },
   {
