@@ -34,7 +34,7 @@ module.exports = {
     detailComment: async (req, res) => {
         try {
             const { id } = req.params
-            const comment = await Comment.findById(id).populate('product').populate('user')
+            const comment = await Comment.findById(id).populate('product', { name: 1, price: 1, description: 1, _id: 0 }).populate('user', { name: 1, email: 1, _id: 0 })
             return res.status(200).json({
                 ok: true,
                 status: 200,
