@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const {createComment} = require("../controller/commentController")
+const {createComment, detailComment} = require("../controller/commentController")
 router
 .post('/create',createComment)
+    .get('/detail/:id', detailComment)
+
 module.exports = router
