@@ -7,7 +7,6 @@ const createError = require('http-errors')
 module.exports = {
   create: async (req, res) => {
     const {name,description,color,price,discount,dues,processor,storage,camera,screenSize,brandId,modelId} = req.body
-    console.log(req.body);
     try {
       if (
         [name, description, price, discount, color, price, dues, processor, storage, camera, screenSize].includes("") ||

@@ -43,5 +43,17 @@ module.exports = {
         } catch (error) {
             return errorResponse(res,error,'Comment Detail')
         }
+    },
+    allComment : async(req,res) =>{
+        try {
+            const comment = await Comment.find().populate('product', { name: 1, price: 1, description: 1, _id: 0 }).populate('user', { name: 1, email: 1, _id: 0 })
+            return res.status(200).json({
+                ok: true,
+                status: 200,
+                data: comment
+            })
+        } catch (error) {
+            return errorResponse(res,error,'All comment')
+        }
     }
 }
