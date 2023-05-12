@@ -4,9 +4,8 @@ const errorResponse = require('../helpers/errorResponse')
 module.exports = {
     createModel : async(req,res) => {
         try {
-        const {name,brandId} = req.body
-        const brand = await Brand.findById(brandId)
-        const model = Model({name, brand : brand._id })
+        const {name} = req.body
+        const model = Model({name})
         const modelStore = await model.save()
         return res.status(200).json({
             ok : true,

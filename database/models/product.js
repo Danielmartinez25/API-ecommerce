@@ -57,7 +57,6 @@ const productSchema = new mongoose.Schema(
     model: { type: mongoose.Schema.Types.ObjectId, ref: "Model" },
     comment: { type: mongoose.Schema.Types.ObjectId, ref: "Comment" },
     brand: { type: mongoose.Schema.Types.ObjectId, ref: "Brand" }
-
   },
   {
     timestamps: true,

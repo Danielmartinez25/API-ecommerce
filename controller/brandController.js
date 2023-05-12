@@ -27,7 +27,6 @@ module.exports = {
             })   
         } catch (error) {
             return errorResponse(res, error, 'Brand Detail')
-
         }
     }
 }
