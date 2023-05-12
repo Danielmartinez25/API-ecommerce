@@ -11,7 +11,7 @@ module.exports = {
             console.log(req.body);
             const user = await User.findById(userId)
             const product = await Product.findById(productId)
-            const newComment = new Comment({
+            const newComment = Comment({
                 comment,
                 user: user._id,
                 product: product._id

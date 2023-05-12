@@ -1,5 +1,4 @@
 const Brand = require('../database/models/brand')
-const Product = require('../database/models/product')
 const errorResponse = require('../helpers/errorResponse')
 
 module.exports = {
