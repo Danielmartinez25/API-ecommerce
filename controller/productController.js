@@ -51,7 +51,17 @@ module.exports = {
   },
   update: async (req, res) => {},
   detail: async (req, res) => {
-    
+    try {
+    const {id} = req.params
+      const product = await Product.findById(id).populate('model', { _id: 0 ,__v : 0}).populate('brand', { _id: 0 , __v : 0}).populate('comment', {_id : 0 , product : 0, user : 0, __v: 0})
+      return res.status(200).json({
+        ok : true,
+        status : 200,
+        data : product
+      })
+  } catch (error) {
+    return errorResponse(res,error,'Product Detail')
+    }
   },
   listProduct: async (req, res) => {},
   remove: async (req, res) => {},
