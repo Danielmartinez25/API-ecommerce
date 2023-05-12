@@ -9,6 +9,7 @@ mongoDB()
 const usersRouter = require("./routes/users");
 const productsRouter = require('./routes/product')
 const commentRouter = require('./routes/comment')
+const brandRouter = require('./routes/brand')
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(cookieParser());
 app.use("/api/users", usersRouter);
 app.use("/api/products",productsRouter)
 app.use("/api/comment", commentRouter)
+app.use("/api/brand", brandRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
