@@ -2,13 +2,13 @@ const Comment = require("../database/models/comment")
 const User = require("../database/models/user")
 const Product = require("../database/models/product")
 const errorResponse = require("../helpers/errorResponse")
+const createError = require("http-errors")
 
 
 module.exports = {
     createComment: async (req, res) => {
         try {
             const { comment, userId, productId } = req.body
-            console.log(req.body);
             const user = await User.findById(userId)
             const product = await Product.findById(productId)
             const newComment = Comment({

@@ -1,9 +1,8 @@
 const Brand = require("../database/models/brand");
 const Model = require("../database/models/model");
 const Product = require("../database/models/product");
-const Comment = require("../database/models/comment");
 const errorResponse = require("../helpers/errorResponse");
-const createError = require('http-errors')
+const createError = require('http-errors');
 
 module.exports = {
   create: async (req, res) => {
@@ -124,4 +123,23 @@ module.exports = {
     }
 
   },
+  paginate : async(req,res) =>{
+    try {
+      const {limit,page} = req.query 
+      const option = {
+        limit,
+        page 
+      }
+      const product = await Product.paginate({},option,populate)
+      
+      return res.status(200).json({
+        ok: true,
+        status: 200,
+        product
+      })
+
+    } catch (error) {
+      return errorResponse(res,error,'Paginate')
+    }
+  }
 };
