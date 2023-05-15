@@ -31,7 +31,7 @@ module.exports = {
     },
     list: async (req, res) => {
         try {
-            const model = await Model.find({},{_id: 0, __v : 0})
+            const model = await Model.find({},{ __v : 0})
             return res.status(200).json({
                 ok: true,
                 status: 200,
