@@ -98,7 +98,7 @@ module.exports = {
   },
   list: async (req, res) => {
     try {
-      const products = await Product.find()
+      const products = await Product.find({}, { _id: 0, __v: 0 })
       return res.status(200).json({
         ok: true,
         status: 200,

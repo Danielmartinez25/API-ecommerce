@@ -100,7 +100,7 @@ module.exports = {
   },
   allUser: async (req, res) => {
     try {
-      const users = await User.find();
+      const users = await User.find({}, { _id: 0, __v: 0 });
       if (!users)
         throw createError(400, "no se encontraron colecciones en database");
       return res.status(200).json({

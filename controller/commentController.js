@@ -46,7 +46,7 @@ module.exports = {
     },
     allComment : async(req,res) =>{
         try {
-            const comment = await Comment.find().populate('product', { name: 1, price: 1, description: 1, _id: 0 }).populate('user', { name: 1, email: 1, _id: 0 })
+            const comment = await Comment.find({}, { _id: 0, __v: 0 }).populate('product', { name: 1, price: 1, description: 1, _id: 0 }).populate('user', { name: 1, email: 1, _id: 0 })
             return res.status(200).json({
                 ok: true,
                 status: 200,
