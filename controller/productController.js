@@ -122,6 +122,18 @@ module.exports = {
     }
 
   },
+  removeAll : async(req,res) => {
+    try {
+      await Product.deleteMany()
+      return res.status(200).json({
+        ok: true,
+        status: 200,
+        msg: 'Products Delete'
+      })
+    } catch (error) {
+      return errorResponse(res,error,'Remove All')
+    }
+  },
   paginate : async(req,res) =>{
     try {
       const {limit,page} = req.query 

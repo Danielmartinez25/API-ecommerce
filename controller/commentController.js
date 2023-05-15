@@ -55,5 +55,17 @@ module.exports = {
         } catch (error) {
             return errorResponse(res,error,'All comment')
         }
-    }
+    },
+    removeAll: async (req, res) => {
+        try {
+            await Comment.deleteMany()
+            return res.status(200).json({
+                ok: true,
+                status: 200,
+                msg: 'Comment Delete'
+            })
+        } catch (error) {
+            return errorResponse(res, error, 'Remove All')
+        }
+    },
 }
