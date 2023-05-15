@@ -28,5 +28,17 @@ module.exports = {
         } catch (error) {
             return errorResponse(res, error, 'Brand Detail')
         }
-    }
+    },
+    list: async (req, res) => {
+        try {
+            const brand = await Brand.find()
+            return res.status(200).json({
+                ok: true,
+                status: 200,
+                data: brand
+            })
+        } catch (error) {
+            return errorResponse(res, error, 'List Brand')
+        }
+    },
 }

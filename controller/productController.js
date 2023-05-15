@@ -96,7 +96,7 @@ module.exports = {
       return errorResponse(res, error, 'Product Detail')
     }
   },
-  listProduct: async (req, res) => {
+  list: async (req, res) => {
     try {
       const products = await Product.find()
       return res.status(200).json({
@@ -139,6 +139,15 @@ module.exports = {
 
     } catch (error) {
       return errorResponse(res,error,'Paginate')
+    }
+  },
+  search : async(req,res) =>{
+    try {
+      const {name} = req.query
+      const model = await Model.find({name})
+      return console.log(model);
+    } catch (error) {
+      return errorResponse(res,error,'search')
     }
   }
 };

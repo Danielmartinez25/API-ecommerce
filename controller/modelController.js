@@ -28,6 +28,18 @@ module.exports = {
         } catch (error) {
             return errorResponse(res,error,'Model Detail')
         }
-    }
+    },
+    list: async (req, res) => {
+        try {
+            const model = await Model.find()
+            return res.status(200).json({
+                ok: true,
+                status: 200,
+                data: model
+            })
+        } catch (error) {
+            return errorResponse(res, error, 'List Model')
+        }
+    },
 }
  
