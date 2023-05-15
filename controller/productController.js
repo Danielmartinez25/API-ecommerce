@@ -3,7 +3,6 @@ const Model = require("../database/models/model");
 const Product = require("../database/models/product");
 const errorResponse = require("../helpers/errorResponse");
 const createError = require('http-errors');
-
 module.exports = {
   create: async (req, res) => {
     const { name, description, color, price, discount, dues, processor, storage, camera, screenSize, brandId, modelId } = req.body
