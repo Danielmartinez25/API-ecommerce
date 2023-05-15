@@ -9,7 +9,7 @@ router
     .get('/paginate', paginate)
     .put('/update/:id', update)
     .post('/create', create)
-    .delete('/remove', remove)
+    .delete('/remove/:id', remove)
     .delete('/remove-all', removeAll)
 
 
