@@ -155,9 +155,27 @@ module.exports = {
   },
   search : async(req,res) =>{
     try {
-      const {name} = req.query
-      const model = await Model.find({name})
-      return console.log(model);
+      const { name, minPrice, maxPrice,color,camera } = req.query;
+
+      const query = {};
+
+      if (name) {
+        query.name = { $regex: name, $options: 'i' };
+      }
+
+      if (minPrice && maxPrice) {
+        query.price = { $gte: minPrice, $lte: maxPrice };
+      } else if (minPrice) {
+        query.price = { $gte: minPrice };
+      } else if (maxPrice) {
+        query.price = { $lte: maxPrice };
+      }
+      const product = await Product.find(query);
+      return res.status(200).json({
+        ok: true,
+        status: 200,
+        data : product
+      })
     } catch (error) {
       return errorResponse(res,error,'search')
     }
