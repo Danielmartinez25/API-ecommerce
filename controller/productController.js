@@ -98,7 +98,7 @@ module.exports = {
   },
   list: async (req, res) => {
     try {
-      const products = await Product.find({}, { _id: 0, __v: 0 })
+      const products = await Product.find({}, { name: 1, color: 1, price: 1 })
       return res.status(200).json({
         ok: true,
         status: 200,
@@ -122,7 +122,7 @@ module.exports = {
     }
 
   },
-  removeAll : async(req,res) => {
+  removeAll: async (req, res) => {
     try {
       await Product.deleteMany()
       return res.status(200).json({
@@ -131,18 +131,18 @@ module.exports = {
         msg: 'Products Delete'
       })
     } catch (error) {
-      return errorResponse(res,error,'Remove All')
+      return errorResponse(res, error, 'Remove All')
     }
   },
-  paginate : async(req,res) =>{
+  paginate: async (req, res) => {
     try {
-      const {limit,page} = req.query 
+      const { limit, page } = req.query
       const option = {
         limit,
-        page 
+        page
       }
-      const product = await Product.paginate({},option)
-      
+      const product = await Product.paginate({}, option)
+
       return res.status(200).json({
         ok: true,
         status: 200,
@@ -150,19 +150,31 @@ module.exports = {
       })
 
     } catch (error) {
-      return errorResponse(res,error,'Paginate')
+      return errorResponse(res, error, 'Paginate')
     }
   },
-  search : async(req,res) =>{
+  search: async (req, res) => {
     try {
-      const { name, minPrice, maxPrice,color,camera } = req.query;
+      const { name, minPrice, maxPrice, color, minDiscount,maxDiscount,camera } = req.query;
 
       const query = {};
 
       if (name) {
         query.name = { $regex: name, $options: 'i' };
       }
-
+      if (camera) {
+        query.camera = { $gte: camera};
+      }
+      if (color) {
+        query.color = { $regex: color, $options: 'i' };
+      }
+      if (minDiscount && maxDiscount) {
+        query.discount = { $gte: minDiscount, $lte: maxDiscount };
+      } else if (minDiscount) {
+        query.discount = { $gte: minDiscount };
+      } else if (maxDiscount) {
+        query.discount = { $lte: maxDiscount };
+      }
       if (minPrice && maxPrice) {
         query.price = { $gte: minPrice, $lte: maxPrice };
       } else if (minPrice) {
@@ -174,10 +186,10 @@ module.exports = {
       return res.status(200).json({
         ok: true,
         status: 200,
-        data : product
+        data: product
       })
     } catch (error) {
-      return errorResponse(res,error,'search')
+      return errorResponse(res, error, 'search')
     }
   }
 };
