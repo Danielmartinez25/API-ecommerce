@@ -1,0 +1,19 @@
+const Role = require("../database/models/role");
+const errorResponse = require("../helpers/errorResponse");
+
+module.exports = {
+    createRoles : async () =>{
+    try {
+    const count = await Role.estimatedDocumentCount();
+    if(count > 0) return;
+    const data = await Promise.all([
+        new Role({ name : 'user'}).save(),
+        new Role({ name: 'moredator' }).save(),
+        new Role({ name: 'admin' }).save(),
+    ])
+    return console.log(data);
+    } catch (error) {
+        return errorResponse(res,error,'createRoles')
+    }
+}
+}

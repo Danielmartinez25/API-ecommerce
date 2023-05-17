@@ -156,9 +156,7 @@ module.exports = {
   search: async (req, res) => {
     try {
       const { name, minPrice, maxPrice, color, minDiscount,maxDiscount,camera } = req.query;
-
       const query = {};
-
       if (name) {
         query.name = { $regex: name, $options: 'i' };
       }

@@ -3,17 +3,17 @@ const createError = require("http-errors");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const { createRoles } = require('./libs/initialSetup');
 const mongoDB = require('./database/config')
-mongoDB()
-
 const usersRouter = require("./routes/users");
 const productsRouter = require('./routes/product')
 const commentRouter = require('./routes/comment')
 const brandRouter = require('./routes/brand')
 const modelRouter = require('./routes/model')
-const paymentRouter = require('./routes/payment')
-
+const paymentRouter = require('./routes/payment');
 const app = express();
+createRoles()
+mongoDB()
 
 app.use(logger("dev"));
 app.use(express.json());

@@ -8,6 +8,10 @@ const userSchema = new mongoose.Schema(
       trim: true,
       require: [true, "Name required"],
     },
+    roles : [{
+      type : mongoose.Types.ObjectId,
+      ref : 'Role'
+    }],
     email: {
       type: String,
       trim: true,
@@ -45,10 +49,10 @@ const userSchema = new mongoose.Schema(
       secure_url: String,
       public_id: String,
     },
-    comment :{
+    comment :[{
       type : mongoose.Schema.Types.ObjectId,
       ref : 'Comment'
-    }
+    }]
   },
   {
     timestamps: true,
