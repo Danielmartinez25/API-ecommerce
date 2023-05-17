@@ -12,16 +12,15 @@ const checkToken = async (req, res, next) => {
     const token = req.headers.authorization;
     const decoded = verify(token, process.env.JWT_SECRET);
     req.user = await User.findById(decoded.id).select("name");
-    console.log(req.user._id);
     next();
   } catch (error) {
     return errorResponse(res, error, "CHECK-TOKEN");
   }
 };
 
-const verifyIsModerator = async () => {
+const verifyIsModerator = async (req,res,next) => {
   try {
-  const user = await findOne(req.user._id)
+  const user = await User.findById(req.user._id)
   const roles = await Role.find({_id : {$in : user.roles}})
   for (let i = 0; i < roles.length; i++) {
     if(roles.length[i] === 'moderator'){
@@ -29,16 +28,24 @@ const verifyIsModerator = async () => {
       return;
     }
   }
-  return createError(403,'Require Moderator role')
+  return res.status(403).json({message : 'Require Moderator role'})
   } catch (error) {
     console.log(error)
   }
 }
 const verifyIsAdmin = async () => {
   try {
-
+    const user = await User.findById(req.user._id)
+    const roles = await Role.find({ _id: { $in: user.roles } })
+    for (let i = 0; i < roles.length; i++) {
+      if (roles.length[i] === 'admin') {
+        next()
+        return;
+      }
+    }
+    return res.status(403).json({ message: 'Require Admin role' })
   } catch (error) {
-
+    console.log(error)
   }
 }
 module.exports = {

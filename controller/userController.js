@@ -36,8 +36,8 @@ module.exports = {
         const foundRoles = await Role.find({ name: { $in: roles } })
         user.roles = foundRoles.map(role => role._id)
       }else{
-        const role = await Role.findOne({name : 'User'})
-        newUser.roles = [role._id]
+        const role = await Role.findOne({name : 'user'})
+        user.roles = [role._id]
       }
       const userStore = await user.save();
       await confirmRegister({
