@@ -6,10 +6,11 @@ const errorResponse = require("../helpers/errorResponse");
 const { uploadImage, deleteImage } = require("../helpers/uploadImage");
 const fs = require("fs-extra");
 const generateJWT = require("../helpers/generateJWT");
+const Role = require("../database/models/role");
 module.exports = {
   register: async (req, res) => {
     try {
-      const { name, email, password, address, phone } = req.body;
+      const { name, email, password, address, phone, roles} = req.body;
 
       if ([name, email, password, address, phone].includes("")) {
         throw createError(400, "Todos los campos son obligatorios");
@@ -31,7 +32,14 @@ module.exports = {
         };
         await fs.unlink(req.files.image.tempFilePath);
       }
-      const userStore = await user.save(req, res);
+      if (roles) {
+        const foundRoles = await Role.find({ name: { $in: roles } })
+        user.roles = foundRoles.map(role => role._id)
+      }else{
+        const role = await Role.findOne({name : 'User'})
+        newUser.roles = [role._id]
+      }
+      const userStore = await user.save();
       await confirmRegister({
         name: userStore.name,
         email: userStore.email,
@@ -48,16 +56,13 @@ module.exports = {
     }
   },
   login: async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password} = req.body;
     try {
-      console.log(req.body);
       if ([email, password].includes("")) {
         throw createError(400, "Todos los campos son obligatorios");
       }
-      let user = await User.findOne({
-        email,
-      });
-
+      let user = await User.findOne({email}).populate("roles")
+      console.log(user);
       if (!user) {
         throw createError(404, "Credenciales invalidas");
       }
@@ -65,20 +70,17 @@ module.exports = {
       if (!user.checked) {
         throw createError(404, "Tu cuenta no ha sido confirmada");
       }
-      console.log(user.checked);
       if (!(await user.checkedPassword(password))) {
         throw createError(404, "Credenciales invalidas");
       }
+      user.token = generateJWT({
+        id: user._id,
+      })
+      const newUser = await user.save()
       return res.status(200).json({
         ok: true,
         msg: "Usuario Logueado",
-        user: {
-          name: user.name,
-          _id: user._id,
-        },
-        token: generateJWT({
-          id: user._id,
-        }),
+        data : newUser
       });
     } catch (error) {
       return errorResponse(res, error, "Login");

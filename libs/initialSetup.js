@@ -13,7 +13,7 @@ module.exports = {
     ])
     return console.log(data);
     } catch (error) {
-        return errorResponse(res,error,'createRoles')
-    }
+        return console.log(error);
+        }
 }
 }
