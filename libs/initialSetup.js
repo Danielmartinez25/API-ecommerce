@@ -1,6 +1,4 @@
 const Role = require("../database/models/role");
-const errorResponse = require("../helpers/errorResponse");
-
 module.exports = {
     createRoles : async () =>{
     try {
