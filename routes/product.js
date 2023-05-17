@@ -8,9 +8,9 @@ router
     .get('/list', list)
     .get('/search', search)
     .get('/paginate', paginate)
-    .put('/update/:id', update)
-    .post('/create',checkToken,verifyIsModerator, create)
-    .delete('/remove/:id', remove)
+    .put('/update/:id',verifyIsAdmin,update)
+    .post('/create',checkToken,verifyIsAdmin, create)
+    .delete('/remove/:id',verifyIsAdmin, remove)
     .delete('/remove-all', removeAll)
 
 
