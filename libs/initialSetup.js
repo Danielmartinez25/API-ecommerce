@@ -8,7 +8,7 @@ module.exports = {
     if(count > 0) return;
     const data = await Promise.all([
         new Role({ name : 'user'}).save(),
-        new Role({ name: 'moredator' }).save(),
+        new Role({ name: 'moderator' }).save(),
         new Role({ name: 'admin' }).save(),
     ])
     return console.log(data);

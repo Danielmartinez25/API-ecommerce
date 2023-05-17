@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const { create, update, remove, detail, list, paginate, search, removeAll } = require('../controller/productController')
-const checkToken = require('../middleware/checkToken')
+const { checkToken, verifyIsModerator, verifyIsAdmin } = require('../middleware/checkToken')
 
 router
     .get('/detail/:id', detail)
