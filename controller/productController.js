@@ -189,5 +189,29 @@ module.exports = {
     } catch (error) {
       return errorResponse(res, error, 'search')
     }
-  }
+  },
+  offer : async (req,res) =>{
+    try {
+      const product = await Product.find({ discount: { $gt: 40 } })
+      return res.status(200).json({
+        ok: true,
+        status: 200,
+        data: product
+      })
+    } catch (error) {
+      return errorResponse(res,error,'New Comers')
+    }
+  },
+  samsung: async (req, res) => {
+    try {
+      const samsung = await Product.find({ name: 'samsung' })
+      return res.status(200).json({
+        ok: true,
+        status: 200,
+        data: samsung
+      })
+    } catch (error) {
+      return errorResponse(res, error, 'Samsung')
+    }
+  },
 };
