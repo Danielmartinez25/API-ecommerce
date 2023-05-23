@@ -58,7 +58,8 @@ module.exports = {
                 {
                     $match: {
                         brand : new mongoose.Types.ObjectId(brandId),
-                        discount: { $gte: 30 }
+                        discount: { $gte: 30 },
+                        dues : {$gte: 5}
                     },
                 },
             ])

@@ -98,7 +98,7 @@ module.exports = {
   },
   list: async (req, res) => {
     try {
-      const products = await Product.find({}, { name: 1, color: 1, price: 1 })
+      const products = await Product.find({}, { name: 1, color: 1, price: 1,discount : 1 })
       return res.status(200).json({
         ok: true,
         status: 200,

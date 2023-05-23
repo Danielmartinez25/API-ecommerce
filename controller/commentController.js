@@ -2,8 +2,6 @@ const Comment = require("../database/models/comment")
 const User = require("../database/models/user")
 const Product = require("../database/models/product")
 const errorResponse = require("../helpers/errorResponse")
-const createError = require("http-errors")
-
 
 module.exports = {
     createComment: async (req, res) => {
