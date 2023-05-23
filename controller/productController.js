@@ -205,7 +205,7 @@ module.exports = {
   rangeOfPrice: async (req, res) => {
     const {minPrice,maxPrice} = req.query
     try {
-      const product = await Product.find({ price: { $gt: minPrice, $lte : maxPrice, $asc} }).sort({price : -1})
+      const product = await Product.find({ price: { $gt: minPrice, $lte : maxPrice} }).sort({'price' : -1})
       return res.status(200).json({
         ok: true,
         status: 200,
