@@ -10,7 +10,7 @@ router
     .get('/test',offer)
     .get('/paginate', paginate)
     .put('/update/:id',verifyIsAdmin,update)
-    .post('/create',checkToken,verifyIsAdmin, create)
+    .post('/create',create)
     .delete('/remove/:id',verifyIsAdmin, remove)
     .delete('/remove-all', removeAll)
 

@@ -1,4 +1,6 @@
+const mongoose  = require('mongoose')
 const Brand = require('../database/models/brand')
+const Product = require('../database/models/product')
 const errorResponse = require('../helpers/errorResponse')
 
 module.exports = {
@@ -19,7 +21,7 @@ module.exports = {
     detailBrand: async (req, res) => {
         try {
             const {id} = req.params
-            const brand = await Brand.findById(id)
+            const brand = await Brand.findById(id, {__v: 0})
             return res.status(200).json({
                 ok: true,
                 status: 200,
@@ -43,7 +45,23 @@ module.exports = {
     },
     samsung: async (req, res) => {
         try {
-            const samsung = await Brand.find({ name: 'Samsung' })
+            const brandId = '6462bfc9a2619f452d44c452'; // ID de la marca específica
+
+            const samsung = await Product.aggregate([
+                {
+                    $lookup: {
+                        from: 'brand', // Nombre de la colección 'Marcas'
+                        localField: 'brand',
+                        foreignField: '_id',
+                        as: 'product',
+                    },
+                },
+                {
+                    $match: {
+                        'brand': new mongoose.Types.ObjectId(brandId)
+                    },
+                },
+            ])
             return res.status(200).json({
                 ok: true,
                 status: 200,
