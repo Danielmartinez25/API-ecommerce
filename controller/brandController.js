@@ -46,7 +46,7 @@ module.exports = {
     offerMotorola: async (req, res) => {
         try {
             const brandId = '6462bfd2a2619f452d44c454'; // ID de la marca específica
-            const samsung = await Product.aggregate([
+            const motorola = await Product.aggregate([
                 {
                     $lookup: {
                         from: 'Brand', // Nombre de la colección 'Marcas'
@@ -66,10 +66,10 @@ module.exports = {
             return res.status(200).json({
                 ok: true,
                 status: 200,
-                data: samsung
+                data: motorola
             })
         } catch (error) {
-            return errorResponse(res, error, 'Samsung')
+            return errorResponse(res, error, 'Motorola')
         }
     },
 }
