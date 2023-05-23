@@ -201,17 +201,5 @@ module.exports = {
     } catch (error) {
       return errorResponse(res,error,'New Comers')
     }
-  },
-  samsung: async (req, res) => {
-    try {
-      const samsung = await Product.find({ name: 'samsung' })
-      return res.status(200).json({
-        ok: true,
-        status: 200,
-        data: samsung
-      })
-    } catch (error) {
-      return errorResponse(res, error, 'Samsung')
-    }
-  },
+  }
 };

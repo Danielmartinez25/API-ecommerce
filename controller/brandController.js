@@ -41,4 +41,16 @@ module.exports = {
             return errorResponse(res, error, 'List Brand')
         }
     },
+    samsung: async (req, res) => {
+        try {
+            const samsung = await Product.find({ name: 'Samsung' })
+            return res.status(200).json({
+                ok: true,
+                status: 200,
+                data: samsung
+            })
+        } catch (error) {
+            return errorResponse(res, error, 'Samsung')
+        }
+    },
 }
