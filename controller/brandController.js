@@ -43,14 +43,13 @@ module.exports = {
             return errorResponse(res, error, 'List Brand')
         }
     },
-    samsung: async (req, res) => {
+    offerMotorola: async (req, res) => {
         try {
-            const brandId = '6462bfc9a2619f452d44c452'; // ID de la marca específica
-
+            const brandId = '6462bfd2a2619f452d44c454'; // ID de la marca específica
             const samsung = await Product.aggregate([
                 {
                     $lookup: {
-                        from: 'brand', // Nombre de la colección 'Marcas'
+                        from: 'Brand', // Nombre de la colección 'Marcas'
                         localField: 'brand',
                         foreignField: '_id',
                         as: 'product',
@@ -58,7 +57,8 @@ module.exports = {
                 },
                 {
                     $match: {
-                        'brand': new mongoose.Types.ObjectId(brandId)
+                        brand : new mongoose.Types.ObjectId(brandId),
+                        discount: { $gte: 30 }
                     },
                 },
             ])
