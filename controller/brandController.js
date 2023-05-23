@@ -43,7 +43,7 @@ module.exports = {
     },
     samsung: async (req, res) => {
         try {
-            const samsung = await Product.find({ name: 'Samsung' })
+            const samsung = await Brand.find({ name: 'Samsung' })
             return res.status(200).json({
                 ok: true,
                 status: 200,
