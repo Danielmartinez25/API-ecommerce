@@ -199,11 +199,13 @@ module.exports = {
         data: product
       })
     } catch (error) {
+
       return errorResponse(res,error,'New Comers')
+      
     }
   },
   rangeOfPrice: async (req, res) => {
-    
+
     const {minPrice,maxPrice} = req.query
     try {
       const product = await Product.find({ price: { $gt: minPrice, $lte : maxPrice} }).sort({'price' : -1})
