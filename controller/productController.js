@@ -199,7 +199,6 @@ module.exports = {
         data: product
       })
     } catch (error) {
-
       return errorResponse(res,error,'New Comers')
       
     }
